@@ -1,1 +1,1 @@
-# Puro REST Framework - Command-line interface
+# Puro - Command-line interface

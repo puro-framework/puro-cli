@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+import { spawn } from 'child_process';
+
 import path = require('path');
 import fs = require('fs');
 import tar = require('tar');
@@ -80,6 +82,7 @@ export class CreateProjectCommand {
 
     await this.downloadArchive();
     await this.extractArchive();
+    await this.installDependencies();
   }
 
   /**
@@ -89,7 +92,7 @@ export class CreateProjectCommand {
     this.targetDir = targetDir;
 
     if (!fs.existsSync(this.targetDir)) {
-      console.error(`The directory "${targetDir}" does not exist`);
+      console.error(`(!) The directory "${targetDir}" does not exist`);
       process.exit(1);
     }
   }
@@ -146,6 +149,28 @@ export class CreateProjectCommand {
       file: this.archiveLocalPath,
       cwd: this.targetDir,
       strip: 1
+    });
+  }
+
+  /**
+   * Installs the template dependencies.
+   */
+  private async installDependencies() {
+    console.log('Install dependencies ...');
+
+    const proc = spawn('yarn', ['install', '--cwd', this.targetDir]);
+
+    proc.stdout.on('data', data => {
+      process.stdout.write(data.toString());
+    });
+
+    proc.stderr.on('data', data => {
+      process.stdout.write(data.toString());
+    });
+
+    proc.on('error', () => {
+      console.error(`(!) Unable to execute "yarn"`);
+      process.exit(1);
     });
   }
 }
