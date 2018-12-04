@@ -3,6 +3,14 @@
   "version": "0.1.0-alpha1",
   "description": "Puro - Command-line interface",
   "license": "MIT",
+  "author": {
+    "name": "Giacomo Trudu aka Wicker25",
+    "email": "wicker25@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/puro-framework/puro.git"
+  },
   "engines": {
     "node": "8"
   },
