@@ -30,10 +30,6 @@ import * as program from 'commander';
 
 program.version('0.1.0-alpha1');
 
-program
-  .command('create-project <targetDir>')
-  .description('creates a new project from a template')
-  .option('-t, --template <template>', 'which template to use')
-  .action(new CreateProjectCommand().exec);
+new CreateProjectCommand(program);
 
 program.parse(process.argv);

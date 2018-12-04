@@ -28,6 +28,8 @@ import tar = require('tar');
 
 import fetch from 'node-fetch';
 
+import { Command } from 'commander';
+
 const PURO_LOCAL_DIR = '.puro';
 const PURO_TEMPLATE_FILENAME = 'template.tar.gz';
 const PURO_DEFAULT_TEMPLATE = 'puro-framework/puro-skeleton';
@@ -35,56 +37,93 @@ const PURO_DEFAULT_TEMPLATE = 'puro-framework/puro-skeleton';
 const GITHUB_ARCHIVE_URL =
   'https://github.com/{template}/archive/{branch}.tar.gz';
 
+/**
+ * Command for creating a new project from a template.
+ */
 export class CreateProjectCommand {
-  targetDir: string = '';
-  puroLocaleDir: string = '';
-  templateUrl: string = '';
-  templateFilePath: string = '';
+  targetDir!: string;
+  puroLocalDir!: string;
+  archiveUrl!: string;
+  archiveLocalPath!: string;
 
-  constructor() {
-    this.exec = this.exec.bind(this);
+  /**
+   * Constructor method.
+   */
+  constructor(program: Command) {
+    program
+      .command('create-project <targetDir>')
+      .description('creates a new project from a template')
+      .option('-t, --template <template>', 'which template to use')
+      .action(this.exec.bind(this));
   }
 
-  async exec(targetDir: string, cmd: any) {
-    // TODO: check if the directory exists
-    this.targetDir = targetDir;
-    this.puroLocaleDir = path.resolve(targetDir, PURO_LOCAL_DIR);
+  /**
+   * Executes the command.
+   *
+   * @param {string} targetDir The target directory.
+   * @param {any}    options   The command options.
+   * @returns {Promise<void>}
+   */
+  async exec(targetDir: string, options: any) {
+    this.parseTargetDir(targetDir);
+    this.parsePuroLocalDir(targetDir);
 
-    this.templateUrl = this.getTemplateUrl(
-      cmd.template || PURO_DEFAULT_TEMPLATE,
+    this.archiveUrl = this.getArchiveUrl(
+      options.template || PURO_DEFAULT_TEMPLATE,
       'master'
     );
 
-    this.templateFilePath = path.resolve(
-      this.puroLocaleDir,
+    this.archiveLocalPath = path.resolve(
+      this.puroLocalDir,
       PURO_TEMPLATE_FILENAME
     );
 
-    if (!fs.existsSync(this.puroLocaleDir)) {
-      fs.mkdirSync(this.puroLocaleDir);
-    }
-
-    await this.downloadTemplate();
-    await this.extractTemplate();
-
-    // TODO; delete local directory
+    await this.downloadArchive();
+    await this.extractArchive();
   }
 
-  private getTemplateUrl(template: string, branch: string) {
-    // TODO: validate template name
+  /**
+   * Builds the Puro's local directory.
+   */
+  private parseTargetDir(targetDir: string) {
+    this.targetDir = targetDir;
+
+    if (!fs.existsSync(this.targetDir)) {
+      console.error(`The directory "${targetDir}" does not exist`);
+      process.exit(1);
+    }
+  }
+
+  /**
+   * Builds the Puro's local directory.
+   */
+  private parsePuroLocalDir(targetDir: string) {
+    this.puroLocalDir = path.resolve(targetDir, PURO_LOCAL_DIR);
+
+    if (!fs.existsSync(this.puroLocalDir)) {
+      fs.mkdirSync(this.puroLocalDir);
+    }
+  }
+
+  /**
+   * Returns the archive URL for the specified template and version.
+   */
+  private getArchiveUrl(template: string, branch: string) {
     return GITHUB_ARCHIVE_URL.replace('{template}', template).replace(
       '{branch}',
       branch
     );
   }
 
-  private async downloadTemplate() {
-    console.log(`Download ${this.templateUrl} ...`);
-
-    const response = await fetch(this.templateUrl);
+  /**
+   * Downloads the template archive from Github.
+   */
+  private async downloadArchive() {
+    console.log(`Download ${this.archiveUrl} ...`);
+    const response = await fetch(this.archiveUrl);
 
     return new Promise((resolve, reject) => {
-      const output = fs.createWriteStream(this.templateFilePath);
+      const output = fs.createWriteStream(this.archiveLocalPath);
 
       response.body.pipe(output);
       response.body.on('error', err => {
@@ -97,11 +136,14 @@ export class CreateProjectCommand {
     });
   }
 
-  private async extractTemplate() {
+  /**
+   * Extracts the template archive to the target directory.
+   */
+  private async extractArchive() {
     console.log('Extract template ...');
 
     await tar.extract({
-      file: this.templateFilePath,
+      file: this.archiveLocalPath,
       cwd: this.targetDir,
       strip: 1
     });
