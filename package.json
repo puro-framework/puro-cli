@@ -1,0 +1,36 @@
+{
+  "name": "puro-cli",
+  "version": "0.1.0-alpha1",
+  "description": "Puro - Command-line interface",
+  "license": "MIT",
+  "engines": {
+    "node": "8"
+  },
+  "bin": {
+    "puro": "./index.js"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "prettify": "prettier --single-quote --write 'src/**/*.ts' 'tests/**/*.ts'",
+    "test": "jest",
+    "release": "yarn clean && yarn build && ./scripts/publish.sh",
+    "clean": "rm -Rf lib/ coverage/"
+  },
+  "jest": {
+    "preset": "ts-jest"
+  },
+  "dependencies": {
+    "@puro/core": "0.1.0-alpha1",
+    "commander": "^2.19.0",
+    "node-fetch": "^2.3.0",
+    "tar": "^4.4.8"
+  },
+  "devDependencies": {
+    "@types/commander": "^2.12.2",
+    "@types/jest": "^23.3.10",
+    "@types/node-fetch": "^2.1.4",
+    "@types/tar": "^4.0.0",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3"
+  }
+}

@@ -1,0 +1,15 @@
+# Package directories
+node_modules
+
+# Compiled objects
+lib/
+coverage/
+
+# IDEs
+.idea/
+
+# Logs
+yarn-error.log
+
+# Sensitive
+config/*.json
