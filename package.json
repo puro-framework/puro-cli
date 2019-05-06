@@ -28,7 +28,7 @@
     "preset": "ts-jest"
   },
   "dependencies": {
-    "@puro/core": "0.1.0-alpha1",
+    "@puro/core": "0.1.0-alpha15",
     "commander": "^2.19.0",
     "node-fetch": "^2.3.0",
     "tar": "^4.4.8"
