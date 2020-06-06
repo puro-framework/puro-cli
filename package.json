@@ -12,7 +12,7 @@
     "url": "https://github.com/puro-framework/puro-cli.git"
   },
   "engines": {
-    "node": "8"
+    "node": "12"
   },
   "bin": {
     "puro": "./index.js"
@@ -28,17 +28,17 @@
     "preset": "ts-jest"
   },
   "dependencies": {
-    "@puro/core": "0.1.0-alpha15",
-    "commander": "^2.19.0",
-    "node-fetch": "^2.3.0",
-    "tar": "^4.4.8"
+    "@puro/core": "0.1.0-alpha16",
+    "commander": "5.1.0",
+    "node-fetch": "2.6.0",
+    "tar": "6.0.2"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
-    "@types/jest": "^23.3.10",
-    "@types/node-fetch": "^2.1.4",
-    "@types/tar": "^4.0.0",
-    "jest": "^23.6.0",
-    "prettier": "^1.15.3"
+    "@types/jest": "25.2.3",
+    "@types/node-fetch": "2.5.7",
+    "@types/tar": "4.0.3",
+    "jest": "26.0.1",
+    "prettier": "2.0.5"
   }
 }
