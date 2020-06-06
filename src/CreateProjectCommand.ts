@@ -129,11 +129,11 @@ export class CreateProjectCommand {
       const output = fs.createWriteStream(this.archiveLocalPath);
 
       response.body.pipe(output);
-      response.body.on('error', err => {
+      response.body.on('error', (err) => {
         reject(err);
       });
 
-      output.on('finish', function() {
+      output.on('finish', function () {
         resolve();
       });
     });
@@ -148,7 +148,7 @@ export class CreateProjectCommand {
     await tar.extract({
       file: this.archiveLocalPath,
       cwd: this.targetDir,
-      strip: 1
+      strip: 1,
     });
   }
 
@@ -160,11 +160,11 @@ export class CreateProjectCommand {
 
     const proc = spawn('yarn', ['install', '--cwd', this.targetDir]);
 
-    proc.stdout.on('data', data => {
+    proc.stdout.on('data', (data) => {
       process.stdout.write(data.toString());
     });
 
-    proc.stderr.on('data', data => {
+    proc.stderr.on('data', (data) => {
       process.stdout.write(data.toString());
     });
 

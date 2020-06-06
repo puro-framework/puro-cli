@@ -26,10 +26,11 @@
 
 import { CreateProjectCommand } from './CreateProjectCommand';
 
-import * as program from 'commander';
+import { Command } from 'commander';
 
-program.version('0.1.0-alpha1');
+const program = new Command();
+program.version('0.1.0-alpha5');
 
-new CreateProjectCommand(program);
+new CreateProjectCommand(program as Command);
 
 program.parse(process.argv);
