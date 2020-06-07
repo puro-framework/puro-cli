@@ -1,6 +1,6 @@
 {
   "name": "@puro/cli",
-  "version": "0.1.0-alpha5",
+  "version": "0.1.0-alpha6",
   "description": "Puro - Command-line interface",
   "license": "MIT",
   "author": {
@@ -28,7 +28,7 @@
     "preset": "ts-jest"
   },
   "dependencies": {
-    "@puro/core": "0.1.0-alpha16",
+    "@puro/core": "0.1.0-alpha19",
     "commander": "5.1.0",
     "node-fetch": "2.6.0",
     "tar": "6.0.2"
@@ -36,6 +36,7 @@
   "devDependencies": {
     "@types/commander": "^2.12.2",
     "@types/jest": "25.2.3",
+    "@types/node": "12.12.6",
     "@types/node-fetch": "2.5.7",
     "@types/tar": "4.0.3",
     "jest": "26.0.1",
