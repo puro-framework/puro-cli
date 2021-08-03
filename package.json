@@ -31,7 +31,7 @@
     "@puro/core": "0.1.0-alpha19",
     "commander": "5.1.0",
     "node-fetch": "2.6.0",
-    "tar": "6.0.2"
+    "tar": "6.1.2"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
